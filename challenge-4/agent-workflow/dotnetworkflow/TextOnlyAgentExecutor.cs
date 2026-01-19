@@ -56,10 +56,20 @@ public sealed class TextOnlyAgentExecutor : Executor<string, string>
                     {
                         foreach (var content in msg.Contents)
                         {
+#pragma warning disable MEAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                             if (content is TextContent tc && !string.IsNullOrWhiteSpace(tc.Text))
                             {
                                 outputText = tc.Text;
                                 agentStep.TextOutput += tc.Text;
+                            }
+                            else if (content is McpServerToolCallContent mcp)
+                            {
+                                agentStep.ToolCalls.Add(new ToolCallInfo
+                                {
+                                    ToolName = mcp.ToolName,
+                                    CallId = mcp.CallId,
+                                    Arguments = mcp.Arguments?.ToString()
+                                });
                             }
                             else if (content is FunctionCallContent fcc)
                             {
@@ -70,12 +80,14 @@ public sealed class TextOnlyAgentExecutor : Executor<string, string>
                                     Arguments = fcc.Arguments?.ToString()
                                 });
                             }
+#pragma warning restore MEAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                         }
                     }
                     else if (msg.Role == ChatRole.Tool)
                     {
                         foreach (var content in msg.Contents)
                         {
+#pragma warning disable MEAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                             if (content is FunctionResultContent frc)
                             {
                                 var matchingCall = agentStep.ToolCalls.LastOrDefault(t => t.CallId == frc.CallId);
@@ -84,6 +96,15 @@ public sealed class TextOnlyAgentExecutor : Executor<string, string>
                                     matchingCall.Result = frc.Result?.ToString()?.Substring(0, Math.Min(500, frc.Result?.ToString()?.Length ?? 0));
                                 }
                             }
+                            else if (content is McpServerToolResultContent mcpr)
+                            {
+                                var matchingCall = agentStep.ToolCalls.LastOrDefault(t => t.CallId == mcpr.CallId);
+                                if (matchingCall != null)
+                                {
+                                    matchingCall.Result = mcpr.Output?.ToString()?.Substring(0, Math.Min(500, mcpr.Output?.ToString()?.Length ?? 0));
+                                }
+                            }
+#pragma warning restore MEAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
                         }
                     }
                 }
