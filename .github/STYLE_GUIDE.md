@@ -74,6 +74,41 @@ The `COSMOS_ENDPOINT` variable must be set.
 | Container/database | `Code` | `Machines` |
 | ID/key | `Code` | `machine-001` |
 
+## Numbered Callouts for Diagrams
+
+When explaining numbered elements in diagrams (e.g., architecture diagrams, flow diagrams), use **filled circled numbers** for better readability:
+
+| Number | Symbol | Unicode |
+|--------|--------|--------|
+| 1 | ❶ | U+2776 |
+| 2 | ❷ | U+2777 |
+| 3 | ❸ | U+2778 |
+| 4 | ❹ | U+2779 |
+| 5 | ❺ | U+277A |
+| 6 | ❻ | U+277B |
+| 7 | ❼ | U+277C |
+| 8 | ❽ | U+277D |
+| 9 | ❾ | U+277E |
+| 10 | ❿ | U+277F |
+
+### Usage
+
+- Use filled circled numbers when referencing numbered callouts in diagrams
+- Each numbered item should be on its own paragraph (add blank line between items)
+- Numbers in diagrams should match the filled style for visual consistency
+
+### Example
+
+```markdown
+![Architecture diagram](./images/architecture.png)
+
+❶ The user submits a request to the API gateway.
+
+❷ The gateway routes the request to the appropriate service.
+
+❸ The service processes the request and returns a response.
+```
+
 ## Color scheme
 The colors are based on **GitHub Dark Default** theme
 
